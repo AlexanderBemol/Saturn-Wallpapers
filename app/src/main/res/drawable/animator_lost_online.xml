@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/undraw_lost_online" >
+    <target
+        android:name="star1"
+        android:animation="@animator/blinking_star_1"
+        />
+    <target
+        android:name="star2"
+        android:animation="@animator/blinking_star_2"
+        />
+    <target
+        android:name="star3"
+        android:animation="@animator/blinking_star_3"
+        />
+    <target
+        android:name="star4"
+        android:animation="@animator/blinking_star_4"
+        />
+    <target
+        android:name="star5"
+        android:animation="@animator/blinking_star_3"
+        />
+    <target
+        android:name="star6"
+        android:animation="@animator/blinking_star_1"
+        />
+    <target
+        android:name="star7"
+        android:animation="@animator/blinking_star_2"
+        />
+    <target
+        android:name="comet1"
+        android:animation="@animator/lost_comet_1"
+        />
+    <target
+        android:name="comet2"
+        android:animation="@animator/lost_comet_2"
+        />
+</animated-vector>

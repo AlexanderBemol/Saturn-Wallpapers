@@ -1,0 +1,73 @@
+
+<resources>
+    <color name="seed">#7b3ac3</color>
+    <color name="md_theme_light_primary">#7B3AC3</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EFDBFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#2B0053</color>
+    <color name="md_theme_light_secondary">#A83918</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#FFDBD1</color>
+    <color name="md_theme_light_onSecondaryContainer">#3B0900</color>
+    <color name="md_theme_light_tertiary">#9B4054</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#FFD9DE</color>
+    <color name="md_theme_light_onTertiaryContainer">#400014</color>
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+    <color name="md_theme_light_background">#FFFBFF</color>
+    <color name="md_theme_light_onBackground">#1D1B1E</color>
+    <color name="md_theme_light_surface">#FFFBFF</color>
+    <color name="md_theme_light_onSurface">#1D1B1E</color>
+    <color name="md_theme_light_surfaceVariant">#E8E0EB</color>
+    <color name="md_theme_light_onSurfaceVariant">#4A454E</color>
+    <color name="md_theme_light_outline">#7B757F</color>
+    <color name="md_theme_light_inverseOnSurface">#F5EFF4</color>
+    <color name="md_theme_light_inverseSurface">#322F33</color>
+    <color name="md_theme_light_inversePrimary">#DAB9FF</color>
+    <color name="md_theme_light_shadow">#000000</color>
+    <color name="md_theme_light_surfaceTint">#7B3AC3</color>
+    <color name="md_theme_light_surfaceTintColor">#7B3AC3</color>
+    <color name="md_theme_dark_primary">#DAB9FF</color>
+    <color name="md_theme_dark_onPrimary">#470084</color>
+    <color name="md_theme_dark_primaryContainer">#621AAA</color>
+    <color name="md_theme_dark_onPrimaryContainer">#EFDBFF</color>
+    <color name="md_theme_dark_secondary">#FFB5A0</color>
+    <color name="md_theme_dark_onSecondary">#601400</color>
+    <color name="md_theme_dark_secondaryContainer">#872101</color>
+    <color name="md_theme_dark_onSecondaryContainer">#FFDBD1</color>
+    <color name="md_theme_dark_tertiary">#FFB2BE</color>
+    <color name="md_theme_dark_onTertiary">#5F1128</color>
+    <color name="md_theme_dark_tertiaryContainer">#7D293D</color>
+    <color name="md_theme_dark_onTertiaryContainer">#FFD9DE</color>
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_theme_dark_background">#1D1B1E</color>
+    <color name="md_theme_dark_onBackground">#E7E1E5</color>
+    <color name="md_theme_dark_surface">#1D1B1E</color>
+    <color name="md_theme_dark_onSurface">#E7E1E5</color>
+    <color name="md_theme_dark_surfaceVariant">#4A454E</color>
+    <color name="md_theme_dark_onSurfaceVariant">#CCC4CF</color>
+    <color name="md_theme_dark_outline">#958E98</color>
+    <color name="md_theme_dark_inverseOnSurface">#1D1B1E</color>
+    <color name="md_theme_dark_inverseSurface">#E7E1E5</color>
+    <color name="md_theme_dark_inversePrimary">#7B3AC3</color>
+    <color name="md_theme_dark_shadow">#000000</color>
+    <color name="md_theme_dark_surfaceTint">#DAB9FF</color>
+    <color name="md_theme_dark_surfaceTintColor">#DAB9FF</color>
+
+    <color name="white">#FFF</color>
+
+    <color name="gradient_1">#1C1B27</color>
+    <color name="gradient_2">#0016235C</color>
+    <color name="gradient_3">#0019258A</color>
+    <color name="gradient_4">#1C1B27E0</color>
+
+    <color name="blue_background_transparent">#B21C1B27</color>
+    <color name="blue_background_transparent_pressed">#A465628F</color>
+
+</resources>

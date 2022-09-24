@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.HomeDescriptionView">
+
+    <ImageView
+        android:id="@+id/home_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:contentDescription="@string/home_wallpaper_description"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample_wallpaper"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent=".5"
+        />
+
+    <ImageButton
+        android:id="@+id/home_description_back_button"
+        android:layout_width="@dimen/rounded_square_button"
+        android:layout_height="@dimen/rounded_square_button"
+        android:background="@drawable/selector_floating_image_button"
+        android:src="@drawable/ic_back"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginStart="@dimen/half_margin"
+        android:contentDescription="@string/back_description"
+        />
+
+    <ImageButton
+        android:id="@+id/home_description_save_button"
+        android:layout_width="@dimen/rounded_square_button"
+        android:layout_height="@dimen/rounded_square_button"
+        android:background="@drawable/selector_floating_image_button"
+        android:src="@drawable/ic_save"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginEnd="@dimen/half_margin"
+        android:contentDescription="@string/save_description"
+        />
+
+    <TextView
+        android:id="@+id/home_description_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sample_title"
+        android:textStyle="bold"
+        android:textSize="@dimen/home_author"
+
+        app:layout_constraintTop_toBottomOf="@id/home_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/basic_margin"
+        />
+
+    <TextView
+        android:id="@+id/home_description_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_author"
+        android:textSize="@dimen/description_text"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_description_title"
+        android:layout_marginHorizontal="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        />
+
+    <TextView
+        android:id="@+id/home_description_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="@string/sample_description"
+        android:textSize="@dimen/description_text"
+        android:scrollbars="vertical"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_description_author"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginBottom="@dimen/basic_margin"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

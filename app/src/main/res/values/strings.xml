@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Saturn Wallpapers</string>
+    <string name="key">GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq</string>
+
+    <string name="on_boarding_title_1">Hi Stargazer</string>
+    <string name="on_boarding_description_1">Welcome to Saturn Papers, your new favorite wallpapers
+        app.</string>
+    <string name="on_boarding_title_2">Discover</string>
+    <string name="on_boarding_description_2">Every day you will see a new and cool astronomic photo
+        as your new wallpaper. \n You can turn off this feature in the app settings.</string>
+    <string name="on_boarding_title_3">Download</string>
+    <string name="on_boarding_description_3">Did you fall in love with a photo? you can download
+        it with a click.</string>
+    <string name="on_boarding_next">Next</string>
+    <string name="on_boarding_get_started">Get Started!"</string>
+
+    <string name="home_wallpaper_description">Cool Wallpaper</string>
+    <string name="home_title">The Astronomic Picture Of the Day</string>
+    <string name="home_author">By Xiaohan Wang</string>
+    <string name="home_author_prefix">By </string>
+    <string name="home_date">Sunday March 13, 2022</string>
+    <string name="home_settings_description">Settings</string>
+    <string name="home_more_button">More</string>
+    <string name="home_manually_button">Update Wallpaper Now</string>
+
+    <string name="sample_title">Colorful Airglow Bands Surround Milky Way</string>
+    <string name="sample_description">Why would the sky glow like a giant repeating rainbow? Airglow.
+        Now air glows all of the time, but it is usually hard to see. A disturbance however — like
+        an approaching storm — may cause noticeable rippling in the Earth\'s atmosphere. These
+        gravity waves are oscillations in air analogous to those created when a rock is thrown in
+        calm water.  Red airglow likely originates from OH molecules about 87-kilometers high,
+        excited by ultraviolet light from the Sun, while orange and green airglow is likely caused
+        by sodium and oxygen atoms slightly higher up.  While driving near Keluke Lake in Qinghai
+        Provence in China a few years ago, the photographer originally noticed</string>
+
+    <string name="back_description">Back</string>
+    <string name="save_description">Save</string>
+
+    <string name="settings">Settings</string>
+    <string name="settings_service_enabled">Service Enabled</string>
+    <string name="settings_quality">Photos Quality</string>
+    <string name="settings_wallpaper_screen">Wallpaper Screen</string>
+
+    <string name="quality_high">High</string>
+    <string name="quality_normal">Normal</string>
+    <string name="screens_both">Both</string>
+    <string name="screens_home">Home</string>
+    <string name="screens_lock">Lock</string>
+</resources>

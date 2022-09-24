@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.settings.SettingsView">
+
+    <ImageButton
+        android:id="@+id/settings_back_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/basic_margin"
+        android:background="@drawable/selector_icon_button"
+        android:contentDescription="@string/back_description"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/settings_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:text="@string/settings"
+
+        android:textSize="@dimen/home_title"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_back_button" />
+
+
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_service_enabled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:layout_marginStart="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/double_margin"
+
+
+
+        android:checked="true"
+        android:text="@string/settings_service_enabled"
+        android:textSize="@dimen/settings_text_size"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_title" />
+
+    <TextView
+        android:id="@+id/settings_quality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:text="@string/settings_quality"
+
+        android:textSize="@dimen/settings_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch_service_enabled" />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/spinner_quality"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:gravity="end|center_vertical"
+        android:text="@string/quality_high"
+        android:textSize="@dimen/custom_menu_text_size"
+        android:textStyle="normal"
+        app:icon="@drawable/ic_forward"
+        app:iconGravity="textEnd"
+        app:iconSize="@dimen/icon_size"
+        android:paddingHorizontal="0dp"
+        android:minWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/settings_quality"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/settings_quality" />
+
+    <TextView
+        android:id="@+id/settings_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/basic_margin"
+        android:layout_marginTop="@dimen/double_margin"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:text="@string/settings_wallpaper_screen"
+        android:textSize="@dimen/settings_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_quality" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/spinner_screen"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/half_margin"
+        android:layout_marginEnd="@dimen/basic_margin"
+        android:gravity="end|center_vertical"
+        android:text="@string/screens_both"
+        android:textSize="@dimen/custom_menu_text_size"
+        android:textStyle="normal"
+        app:icon="@drawable/ic_forward"
+        app:iconGravity="textEnd"
+        app:iconSize="@dimen/icon_size"
+        android:paddingHorizontal="0dp"
+        android:minWidth="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/settings_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/settings_screen" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

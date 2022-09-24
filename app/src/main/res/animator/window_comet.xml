@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:duration="5000"
+        android:propertyName="translateX"
+        android:valueFrom="-35"
+        android:valueTo="45"
+        android:repeatCount="0"
+        android:interpolator="@android:anim/linear_interpolator"
+        />
+    <objectAnimator
+        android:duration="5000"
+        android:propertyName="translateY"
+        android:valueFrom="-10"
+        android:valueTo="40"
+        android:repeatCount="0"
+        android:interpolator="@android:anim/linear_interpolator"
+        />
+</set>

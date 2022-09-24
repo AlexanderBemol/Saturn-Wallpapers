@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "104822459774",
+    "project_id": "saturn-wallpapers",
+    "storage_bucket": "saturn-wallpapers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104822459774:android:2e22ab48a1d48846eb372f",
+        "android_client_info": {
+          "package_name": "montanez.alexander.apodpapers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104822459774-lrud473n4c2pe45u9k2e6g0qi8d0lubh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "montanez.alexander.apodpapers",
+            "certificate_hash": "c17c2fe2e234cb76cf716facc1a980be01a34e71"
+          }
+        },
+        {
+          "client_id": "104822459774-r4r247tha5fensnns0qhdi3v74vkavu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs_OXF7rmOMRDWFPPFB5jDv0ym_RBjWIo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104822459774-r4r247tha5fensnns0qhdi3v74vkavu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

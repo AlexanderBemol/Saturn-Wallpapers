@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/screens_both" android:title="@string/screens_both"/>
+    <item android:id="@+id/screens_home" android:title="@string/screens_home"/>
+    <item android:id="@+id/screens_lock" android:title="@string/screens_lock"/>
+</menu>
