@@ -5,17 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentHomeViewBinding
 import montanez.alexander.saturnwallpapers.utils.getReadableString
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class HomeView : Fragment() {
     private var _binding: FragmentHomeViewBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: HomeViewModel by viewModel()
+    private val viewModel: HomeViewModel by sharedViewModel()
     private var wallpaperBitmap : Bitmap? = null
 
     override fun onCreateView(
@@ -24,7 +31,6 @@ class HomeView : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeViewBinding.inflate(inflater, container, false)
-        observeLiveData()
         showViewContent(false)
         showLoading(true)
         return binding.root
@@ -35,36 +41,47 @@ class HomeView : Fragment() {
         _binding = null
     }
 
+    override fun onStart() {
+        super.onStart()
+        observeLiveData()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getCurrentAstronomicPhotoOfTheDay()
 
         binding.homeMoreButton.setOnClickListener {
-            findNavController().navigate(R.id.action_homeView_to_homeDescriptionView)
+            findNavController().navigate(R.id.action_global_moreOptionsBottomSheetView)
         }
         binding.homeButtonSettings.setOnClickListener{
             findNavController().navigate(R.id.action_homeView_to_settingsView)
-        }
-        binding.homeManuallyRunButton.setOnClickListener {
-            //validate not null
-            viewModel.updateWallpaper(wallpaperBitmap!!)
         }
     }
 
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-            viewModel.astronomicPhoto.observe(viewLifecycleOwner) {
-                binding.homeTitle.text = it.title.toString()
-                binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
-                binding.homeDate.text = it.date.getReadableString()
-                binding.backgroundImage.setImageBitmap(it.picture)
-                wallpaperBitmap = it.picture
-                showLoading(false)
-                showViewContent(true)
-                binding.homeAuthor.visibility = if(it.author == null) View.INVISIBLE else View.VISIBLE
+            lifecycleScope.launch{
+                viewModel.astronomicData.flowWithLifecycle(viewLifecycleOwner.lifecycle,Lifecycle.State.CREATED)
+                    .collect{
+                        binding.homeTitle.text = it.title.toString()
+                        binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
+                        binding.homeDate.text = it.date.getReadableString()
+                        binding.backgroundImage.setImageBitmap(it.picture)
+                        wallpaperBitmap = it.picture
+                        showLoading(false)
+                        showViewContent(true)
+                        binding.homeAuthor.visibility = if(it.author == null) View.INVISIBLE else View.VISIBLE
+                    }
+            }
+
+            lifecycleScope.launch {
+                viewModel.eventState.flowWithLifecycle(viewLifecycleOwner.lifecycle,Lifecycle.State.CREATED)
+                    .collect {showSuccessMessage(it)}
             }
         }
+
+
     }
 
     private fun showViewContent(show: Boolean){
@@ -83,6 +100,9 @@ class HomeView : Fragment() {
         binding.homeTextLoading.visibility = visibility
     }
 
+    private fun showSuccessMessage(event: HomeEventState){
+        Toast.makeText(context,event.getStringResource(),Toast.LENGTH_SHORT).show()
+    }
 
 
 }

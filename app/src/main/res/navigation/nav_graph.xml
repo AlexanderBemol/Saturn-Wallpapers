@@ -66,4 +66,10 @@
         android:name="montanez.alexander.saturnwallpapers.ui.settings.SettingsView"
         android:label="fragment_settings_view"
         tools:layout="@layout/fragment_settings_view" />
+    <dialog
+        android:id="@+id/moreOptionsBottomSheetView"
+        android:name="montanez.alexander.saturnwallpapers.ui.home.MoreOptionsBottomSheetView"
+        android:label="dialog_more_options"
+        tools:layout="@layout/dialog_more_options" />
+    <action android:id="@+id/action_global_moreOptionsBottomSheetView" app:destination="@id/moreOptionsBottomSheetView"/>
 </navigation>

@@ -7,11 +7,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import montanez.alexander.saturnwallpapers.model.AstronomicPhoto
-import montanez.alexander.saturnwallpapers.model.LogData
-import montanez.alexander.saturnwallpapers.model.QualityOfImages
-import montanez.alexander.saturnwallpapers.model.Transactions
+import montanez.alexander.saturnwallpapers.model.*
 import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
 import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
@@ -28,6 +29,12 @@ class HomeViewModel(
 
     val astronomicPhoto = MutableLiveData<AstronomicPhoto>()
 
+    private val _eventState = MutableSharedFlow<HomeEventState>(0)
+    val eventState: SharedFlow<HomeEventState> get() = _eventState
+
+    private val _astronomicData = MutableSharedFlow<AstronomicPhoto>(0)
+    val astronomicData: SharedFlow<AstronomicPhoto> get() = _astronomicData
+
     fun getCurrentAstronomicPhotoOfTheDay(){
         viewModelScope.launch {
             val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
@@ -40,7 +47,7 @@ class HomeViewModel(
                 astronomicPhotoOfTheDay.picture =
                     mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
 
-                astronomicPhoto.value = astronomicPhotoOfTheDay
+                _astronomicData.emit(astronomicPhotoOfTheDay)
             }
         }
     }
@@ -63,6 +70,42 @@ class HomeViewModel(
                 logDataRepository.insertOneLogData(logData)
             }
         }
+    }
+
+    fun updateSpecificWallpaper(screenOfWallpaper: ScreenOfWallpaper){
+        viewModelScope.launch {
+            val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
+            preferencesRepository.getSettings().collect {
+                val pictureURL: String =
+                    if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
+                        astronomicPhotoOfTheDay.photoHDUrl.toString()
+                    else astronomicPhotoOfTheDay.photoRegularUrl.toString()
+
+                astronomicPhotoOfTheDay.picture =
+                    mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
+
+                wallpaperHelper.changeWallpaper(
+                    getApplication<Application>().applicationContext,
+                    astronomicPhotoOfTheDay.picture!!,
+                    screenOfWallpaper
+                )
+
+                //eventSuccess.value = HomeEventState.WALLPAPER_SET
+                _eventState.emit(HomeEventState.WALLPAPER_SET)
+
+                /*
+                logDataRepository.insertOneLogData(LogData(
+                    id = 0,
+                    transaction = Transactions.WALLPAPER_CHANGED_MANUALLY,
+                    result = 1,
+                    error = "",
+                    dateTime = Date()
+                ))
+
+                 */
+            }
+        }
+
     }
 
 }

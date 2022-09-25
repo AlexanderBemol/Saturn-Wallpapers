@@ -48,4 +48,13 @@
     <string name="screens_lock">Lock</string>
 
     <string name="loading_text">Loading…</string>
+
+    <string name="more_options_download">Download Image</string>
+    <string name="more_options_set_both">Set As System Wallpaper</string>
+    <string name="more_options_set_lock_screen">Set As Lockscreen Wallpaper</string>
+    <string name="more_options_set_home_Screen">Set As Home Screen Wallpaper</string>
+
+    <string name="message_set_wallpaper_success">The wallpaper was correctly set!</string>
+    <string name="message_save_wallpaper_success">The wallpaper was correctly saved!</string>
+    <string name="message_error">Something went wrong</string>
 </resources>

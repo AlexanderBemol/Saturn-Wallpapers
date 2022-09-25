@@ -91,27 +91,6 @@
         />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_manually_run_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/home_manually_button"
-        app:strokeWidth="1dp"
-        android:textSize="@dimen/button_text_size"
-        android:textAllCaps="true"
-        app:cornerRadius="@dimen/rounded_button_radius"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:textColor="@color/md_theme_dark_surfaceTint"
-        app:strokeColor="@color/md_theme_dark_surfaceTint"
-        android:visibility="invisible"
-
-        app:layout_constraintBottom_toTopOf="@id/home_more_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="@dimen/double_margin"
-        android:layout_marginBottom="@dimen/basic_margin"
-        />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/home_more_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
