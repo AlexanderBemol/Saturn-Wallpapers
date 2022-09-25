@@ -1,6 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Saturn Wallpapers</string>
-    <string name="key">GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq</string>
+    <string name="key" tools:ignore="Typos">GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq</string>
 
     <string name="on_boarding_title_1">Hi Stargazer</string>
     <string name="on_boarding_description_1">Welcome to Saturn Papers, your new favorite wallpapers
@@ -46,4 +46,6 @@
     <string name="screens_both">Both</string>
     <string name="screens_home">Home</string>
     <string name="screens_lock">Lock</string>
+
+    <string name="loading_text">Loading…</string>
 </resources>

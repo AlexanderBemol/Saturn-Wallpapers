@@ -102,6 +102,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:textColor="@color/md_theme_dark_surfaceTint"
         app:strokeColor="@color/md_theme_dark_surfaceTint"
+        android:visibility="invisible"
 
         app:layout_constraintBottom_toTopOf="@id/home_more_button"
         app:layout_constraintStart_toStartOf="parent"
@@ -120,14 +121,41 @@
         android:textAllCaps="true"
         app:cornerRadius="@dimen/rounded_button_radius"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:textColor="@color/md_theme_dark_surfaceTint"
-        app:strokeColor="@color/md_theme_dark_surfaceTint"
+        android:textColor="@color/md_theme_dark_onBackground"
+        app:strokeColor="@color/md_theme_dark_onBackground"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/double_margin"
         android:layout_marginBottom="@dimen/basic_margin"
+        />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading_circle"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminate="true"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/home_text_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/description_text"
+        android:text="@string/loading_text"
+        android:textColor="@color/md_theme_dark_onBackground"
+        android:textStyle="bold"
+        android:textAlignment="center"
+
+        app:layout_constraintTop_toBottomOf="@id/loading_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/half_margin"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
