@@ -102,7 +102,9 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
         val context = this.context
         if (context != null){
             lifecycleScope.launch {
-                viewModel.eventState.flowWithLifecycle(viewLifecycleOwner.lifecycle, Lifecycle.State.STARTED)
+                viewModel.eventState.flowWithLifecycle(
+                    this@MoreOptionsBottomSheetView.lifecycle, Lifecycle.State.STARTED
+                )
                     .collect {onEventCompleted()}
             }
         }
