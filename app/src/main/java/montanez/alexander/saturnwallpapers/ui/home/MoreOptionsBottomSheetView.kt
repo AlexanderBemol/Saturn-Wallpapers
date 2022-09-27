@@ -36,6 +36,7 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.moreOptionsDownload.setOnClickListener {
             onLoading(it as MaterialTextView)
+            viewModel.downloadPhoto()
         }
         binding.moreOptionsSetBoth.setOnClickListener {
             viewModel.updateSpecificWallpaper(ScreenOfWallpaper.BOTH_SCREENS)

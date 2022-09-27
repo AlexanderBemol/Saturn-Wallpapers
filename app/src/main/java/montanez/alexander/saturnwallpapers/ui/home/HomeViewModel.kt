@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.model.*
+import montanez.alexander.saturnwallpapers.repository.IFilesRepository
 import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
 import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
@@ -24,10 +25,9 @@ class HomeViewModel(
     private val wallpaperHelper: WallpaperHelper,
     private val preferencesRepository: IPreferencesRepository,
     private val logDataRepository: ILogDataRepository,
+    private val filesRepository: IFilesRepository,
     application: Application
 ) : AndroidViewModel(application) {
-
-    val astronomicPhoto = MutableLiveData<AstronomicPhoto>()
 
     private val _eventState = MutableSharedFlow<HomeEventState>(0)
     val eventState: SharedFlow<HomeEventState> get() = _eventState
@@ -90,22 +90,37 @@ class HomeViewModel(
                     screenOfWallpaper
                 )
 
-                //eventSuccess.value = HomeEventState.WALLPAPER_SET
                 _eventState.emit(HomeEventState.WALLPAPER_SET)
-
-                /*
-                logDataRepository.insertOneLogData(LogData(
-                    id = 0,
-                    transaction = Transactions.WALLPAPER_CHANGED_MANUALLY,
-                    result = 1,
-                    error = "",
-                    dateTime = Date()
-                ))
-
-                 */
             }
         }
 
+    }
+
+    fun downloadPhoto(){
+        viewModelScope.launch {
+            try{
+                val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
+                preferencesRepository.getSettings().collect {
+                    val pictureURL: String =
+                        if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
+                            astronomicPhotoOfTheDay.photoHDUrl.toString()
+                        else astronomicPhotoOfTheDay.photoRegularUrl.toString()
+
+                    astronomicPhotoOfTheDay.picture =
+                        mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
+
+                    val filename = astronomicPhotoOfTheDay.date.time.toString() + ".jpg"
+
+                    filesRepository.savePhotoToStorage(astronomicPhotoOfTheDay.picture!!,filename)
+
+                    _eventState.emit(HomeEventState.WALLPAPER_SAVED)
+
+                }
+            } catch (e : Exception){
+                _eventState.emit(HomeEventState.ERROR)
+            }
+
+        }
     }
 
 }

@@ -76,15 +76,17 @@ fun providePreferencesRepository(context: Context) : IPreferencesRepository = Pr
 fun provideLogDataRepository(logDataDAO: LogDataDAO) : ILogDataRepository = LogDataRepository(logDataDAO)
 fun provideMainRepository(apiHelper: IAstronomicPhotoHelper, wallpaperHelper: WallpaperHelper) : IMainRepository =
     MainRepository(apiHelper,wallpaperHelper)
+fun provideFilesRepository(context: Context) : IFilesRepository = FilesRepository(context)
 
 val reposModule = module {
     single { provideMainRepository(get(), get()) }
     single { providePreferencesRepository(androidContext()) }
     single { provideLogDataRepository(get()) }
+    single { provideFilesRepository(androidContext()) }
 }
 
 val viewModelsModule = module {
-    viewModel { HomeViewModel(get(),get(), get(), get(), androidApplication()) }
+    viewModel { HomeViewModel(get(),get(), get(), get(), get(), androidApplication()) }
     viewModel { SplashViewModel(get()) }
     viewModel { OnBoardingViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
