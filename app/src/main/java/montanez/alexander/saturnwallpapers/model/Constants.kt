@@ -6,11 +6,10 @@ class Constants {
         //Make these const will make koin retrofit factory crash
         val BASE_URL = "https://api.nasa.gov/planetary/"
         val APOD_KEY = "GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq"
-        val API_KEY_TAG = "API_KEY"
 
         const val WORK_MANAGER_DAILY_ID = "SATURN_WALLPAPERS_DAILY_WORKER"
 
-        const val APP_DEBUG_TAG = "APOD_DEBUG"
+        //const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
 
         const val MEDIA_TYPE_IMAGE = "image"
         const val MEDIA_TYPE_VIDEO = "video"
