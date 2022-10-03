@@ -61,7 +61,7 @@ class HomeView : Fragment() {
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-            viewModel.astronomicLiveData.observe(viewLifecycleOwner){
+            viewModel.astronomicLiveData.observe(this.viewLifecycleOwner){
                 binding.homeTitle.text = it.title.toString()
                 binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
                 binding.homeDate.text = it.date.getReadableString()
@@ -71,10 +71,6 @@ class HomeView : Fragment() {
                 showViewContent(true)
                 binding.homeAuthor.visibility = if(it.author == null || it.author.equals(""))
                     View.INVISIBLE else View.VISIBLE
-            }
-
-            viewModel.eventStateLiveData.observe(viewLifecycleOwner){
-                showSuccessMessage(it)
             }
         }
 
@@ -97,9 +93,6 @@ class HomeView : Fragment() {
         binding.homeTextLoading.visibility = visibility
     }
 
-    private fun showSuccessMessage(event: HomeEventState){
-        Toast.makeText(context,event.getStringResource(),Toast.LENGTH_SHORT).show()
-    }
 
 
 }

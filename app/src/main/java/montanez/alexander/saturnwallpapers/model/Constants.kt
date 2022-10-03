@@ -9,7 +9,7 @@ class Constants {
 
         const val WORK_MANAGER_DAILY_ID = "SATURN_WALLPAPERS_DAILY_WORKER"
 
-        //const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
+        const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
 
         const val MEDIA_TYPE_IMAGE = "image"
         const val MEDIA_TYPE_VIDEO = "video"

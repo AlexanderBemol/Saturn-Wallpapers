@@ -7,7 +7,8 @@ enum class HomeEventState(
 ) {
     WALLPAPER_SAVED(R.string.message_save_wallpaper_success),
     WALLPAPER_SET(R.string.message_set_wallpaper_success),
-    ERROR(R.string.message_error);
+    ERROR(R.string.message_error),
+    IDLE(0);
 
     fun getStringResource() = stringResource
 }

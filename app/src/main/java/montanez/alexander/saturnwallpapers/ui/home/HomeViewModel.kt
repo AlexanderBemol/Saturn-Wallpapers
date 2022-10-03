@@ -2,6 +2,7 @@ package montanez.alexander.saturnwallpapers.ui.home
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.model.*
 import montanez.alexander.saturnwallpapers.repository.*
+import montanez.alexander.saturnwallpapers.utils.SingleLiveEvent
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
 import montanez.alexander.saturnwallpapers.utils.toTimestampFilename
 import java.util.*
@@ -27,18 +29,25 @@ class HomeViewModel(
     application: Application
 ) : AndroidViewModel(application) {
 
-    val astronomicLiveData = MutableLiveData<AstronomicPhoto>()
-    val eventStateLiveData = MutableLiveData<HomeEventState>()
+    val astronomicLiveData = SingleLiveEvent<AstronomicPhoto>()
+    val eventStateLiveData = SingleLiveEvent<HomeEventState>()
 
-    fun updateSpecificWallpaper(wallpaper: Bitmap, screenOfWallpaper: ScreenOfWallpaper){
+    var bitmapWallpaper: Bitmap? = null
+
+    fun updateSpecificWallpaper(screenOfWallpaper: ScreenOfWallpaper){
         CoroutineScope(Dispatchers.IO).launch{
             try{
-                wallpaperHelper.changeWallpaper(
-                    getApplication<Application>().applicationContext,
-                    wallpaper,
-                    screenOfWallpaper
-                )
-                eventStateLiveData.postValue(HomeEventState.WALLPAPER_SET)
+                val bitmap = bitmapWallpaper
+                if (bitmap != null){
+                    wallpaperHelper.changeWallpaper(
+                        getApplication<Application>().applicationContext,
+                        bitmap,
+                        screenOfWallpaper
+                    )
+                    eventStateLiveData.postValue(HomeEventState.WALLPAPER_SET)
+                } else {
+                    eventStateLiveData.postValue(HomeEventState.ERROR)
+                }
             } catch (e : Exception){
                 eventStateLiveData.postValue(HomeEventState.ERROR)
             }
@@ -46,11 +55,16 @@ class HomeViewModel(
 
     }
 
-    fun downloadPhoto(wallpaper: Bitmap){
+    fun downloadPhoto(){
         CoroutineScope(Dispatchers.IO).launch{
             try{
-                filesRepository.savePhotoToStorage(wallpaper,Date().toTimestampFilename())
-                eventStateLiveData.postValue(HomeEventState.WALLPAPER_SAVED)
+                val bitmap = bitmapWallpaper
+                if (bitmap != null){
+                    filesRepository.savePhotoToStorage(bitmap,Date().toTimestampFilename())
+                    eventStateLiveData.postValue(HomeEventState.WALLPAPER_SAVED)
+                } else {
+                    eventStateLiveData.postValue(HomeEventState.ERROR)
+                }
             } catch (e : Exception){
                 eventStateLiveData.postValue(HomeEventState.ERROR)
             }
@@ -58,11 +72,13 @@ class HomeViewModel(
     }
 
     fun getAstronomicPhotoOfTheDay(){
+        Log.d(Constants.APP_DEBUG_TAG,"get function")
         CoroutineScope(Dispatchers.IO).launch{
             val astronomicPhotoData =
                 astronomicPhotoRepository.getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
             if(astronomicPhotoData is TaskResult.Success){
                 val data = astronomicPhotoData.data
+                bitmapWallpaper = data.picture
                 astronomicLiveData.postValue(data)
             }
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -36,18 +37,18 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.moreOptionsDownload.setOnClickListener {
             onLoading(it as MaterialTextView)
-            //viewModel.downloadPhoto()
+            viewModel.downloadPhoto()
         }
         binding.moreOptionsSetBoth.setOnClickListener {
-            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.BOTH_SCREENS)
+            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.BOTH_SCREENS)
             onLoading(it as MaterialTextView)
         }
         binding.moreOptionsSetLock.setOnClickListener {
-            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.LOCK_SCREEN)
+            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.LOCK_SCREEN)
             onLoading(it as MaterialTextView)
         }
         binding.moreOptionsSetHome.setOnClickListener {
-            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.HOME_SCREEN)
+            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.HOME_SCREEN)
             onLoading(it as MaterialTextView)
         }
     }
@@ -74,7 +75,7 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
 
     }
 
-    private fun onEventCompleted(){
+    private fun onEventCompleted(event: HomeEventState){
         val myContext = context
         if(myContext != null){
             val downloadDrawable = AppCompatResources.getDrawable(myContext,R.drawable.ic_save)
@@ -95,13 +96,17 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
                 lockDrawable,null,null,null
             )
         }
+        if(event != HomeEventState.IDLE)
+            Toast.makeText(context,event.getStringResource(), Toast.LENGTH_SHORT).show()
         this.dismiss()
     }
 
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-
+            viewModel.eventStateLiveData.observe(this@MoreOptionsBottomSheetView){
+                if(it != HomeEventState.IDLE) onEventCompleted(it)
+            }
         }
     }
 }
