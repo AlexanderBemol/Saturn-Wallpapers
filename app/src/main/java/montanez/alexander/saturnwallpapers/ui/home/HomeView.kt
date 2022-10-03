@@ -48,7 +48,7 @@ class HomeView : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCurrentAstronomicPhotoOfTheDay()
+        viewModel.getAstronomicPhotoOfTheDay()
 
         binding.homeMoreButton.setOnClickListener {
             findNavController().navigate(R.id.action_global_moreOptionsBottomSheetView)
@@ -61,23 +61,20 @@ class HomeView : Fragment() {
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-            lifecycleScope.launch{
-                viewModel.astronomicData.flowWithLifecycle(viewLifecycleOwner.lifecycle,Lifecycle.State.CREATED)
-                    .collect{
-                        binding.homeTitle.text = it.title.toString()
-                        binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
-                        binding.homeDate.text = it.date.getReadableString()
-                        binding.backgroundImage.setImageBitmap(it.picture)
-                        wallpaperBitmap = it.picture
-                        showLoading(false)
-                        showViewContent(true)
-                        binding.homeAuthor.visibility = if(it.author == null) View.INVISIBLE else View.VISIBLE
-                    }
+            viewModel.astronomicLiveData.observe(viewLifecycleOwner){
+                binding.homeTitle.text = it.title.toString()
+                binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
+                binding.homeDate.text = it.date.getReadableString()
+                binding.backgroundImage.setImageBitmap(it.picture)
+                wallpaperBitmap = it.picture
+                showLoading(false)
+                showViewContent(true)
+                binding.homeAuthor.visibility = if(it.author == null || it.author.equals(""))
+                    View.INVISIBLE else View.VISIBLE
             }
 
-            lifecycleScope.launch {
-                viewModel.eventState.flowWithLifecycle(viewLifecycleOwner.lifecycle,Lifecycle.State.CREATED)
-                    .collect {showSuccessMessage(it)}
+            viewModel.eventStateLiveData.observe(viewLifecycleOwner){
+                showSuccessMessage(it)
             }
         }
 

@@ -32,6 +32,7 @@ class Constants {
         const val KEY_SETTINGS_SCREEN = "SETTINGS_SCREEN"
         const val KEY_SETTINGS_SERVICE_ENABLED = "SETTINGS_SERVICE_ENABLED"
 
+        const val PING_TIME : Int = 3000
     }
 
 }

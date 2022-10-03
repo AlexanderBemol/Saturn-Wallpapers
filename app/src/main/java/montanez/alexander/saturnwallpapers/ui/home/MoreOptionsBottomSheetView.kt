@@ -36,18 +36,18 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.moreOptionsDownload.setOnClickListener {
             onLoading(it as MaterialTextView)
-            viewModel.downloadPhoto()
+            //viewModel.downloadPhoto()
         }
         binding.moreOptionsSetBoth.setOnClickListener {
-            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.BOTH_SCREENS)
+            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.BOTH_SCREENS)
             onLoading(it as MaterialTextView)
         }
         binding.moreOptionsSetLock.setOnClickListener {
-            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.LOCK_SCREEN)
+            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.LOCK_SCREEN)
             onLoading(it as MaterialTextView)
         }
         binding.moreOptionsSetHome.setOnClickListener {
-            viewModel.updateSpecificWallpaper(ScreenOfWallpaper.HOME_SCREEN)
+            //viewModel.updateSpecificWallpaper(ScreenOfWallpaper.HOME_SCREEN)
             onLoading(it as MaterialTextView)
         }
     }
@@ -101,12 +101,7 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-            lifecycleScope.launch {
-                viewModel.eventState.flowWithLifecycle(
-                    this@MoreOptionsBottomSheetView.lifecycle, Lifecycle.State.STARTED
-                )
-                    .collect {onEventCompleted()}
-            }
+
         }
     }
 }
