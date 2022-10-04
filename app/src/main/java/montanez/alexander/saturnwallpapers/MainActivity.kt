@@ -1,9 +1,5 @@
 package montanez.alexander.saturnwallpapers
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.*
@@ -22,9 +18,9 @@ class MainActivity : AppCompatActivity() {
 
         val periodicWorkRequest =
             PeriodicWorkRequestBuilder<DailyWallpaperWorker>(
-                6,TimeUnit.HOURS,
+                3,TimeUnit.HOURS,
                 1,TimeUnit.HOURS
-            ).build()
+            ).addTag(Constants.WORK_MANAGER_DAILY_TAG).build()
 
         WorkManager.getInstance(applicationContext)
             .enqueueUniquePeriodicWork(

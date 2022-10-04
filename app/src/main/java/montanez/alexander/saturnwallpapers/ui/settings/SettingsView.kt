@@ -9,8 +9,10 @@ import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.work.WorkManager
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentSettingsViewBinding
+import montanez.alexander.saturnwallpapers.model.Constants
 import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.ScreenOfWallpaper
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,6 +51,7 @@ class SettingsView : Fragment() {
         }
         binding.switchServiceEnabled.setOnCheckedChangeListener { _, b ->
             viewModel.setIsServiceEnabled(b)
+            if(!b) cancelService()
         }
 
     }
@@ -102,6 +105,10 @@ class SettingsView : Fragment() {
                 }
             }
         }
+    }
+
+    private fun cancelService(){
+        context?.let { WorkManager.getInstance(it).cancelAllWorkByTag(Constants.WORK_MANAGER_DAILY_TAG) }
     }
 
 }

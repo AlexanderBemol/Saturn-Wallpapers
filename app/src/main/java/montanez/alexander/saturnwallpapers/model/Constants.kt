@@ -8,6 +8,7 @@ class Constants {
         val APOD_KEY = "GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq"
 
         const val WORK_MANAGER_DAILY_ID = "SATURN_WALLPAPERS_DAILY_WORKER"
+        const val WORK_MANAGER_DAILY_TAG = "SATURN_WALLPAPERS_DAILY_WORKER_TAG"
 
         const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
 

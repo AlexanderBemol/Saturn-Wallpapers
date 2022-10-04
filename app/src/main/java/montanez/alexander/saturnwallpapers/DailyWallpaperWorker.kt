@@ -8,7 +8,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.withContext
 import montanez.alexander.saturnwallpapers.model.LogData
 import montanez.alexander.saturnwallpapers.model.QualityOfImages
+import montanez.alexander.saturnwallpapers.model.TaskResult
 import montanez.alexander.saturnwallpapers.model.Transactions
+import montanez.alexander.saturnwallpapers.repository.IAstronomicPhotoRepository
 import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
 import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
@@ -21,32 +23,35 @@ class DailyWallpaperWorker(
     context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams), KoinComponent {
-    private val mainRepository: IMainRepository by inject()
     private val preferencesRepository: IPreferencesRepository by inject()
     private val wallpaperHelper: WallpaperHelper by inject()
     private val logDataRepository: ILogDataRepository by inject()
+    private val astronomicPhotoRepository: IAstronomicPhotoRepository by inject()
 
     override suspend fun doWork(): Result {
-        val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
         var result = Result.success()
         withContext(Dispatchers.IO){
-            preferencesRepository
-                .getSettings()
-                .catch { result = Result.retry() }
-                .collect{
-                    val pictureURL : String =
-                        if(it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
-                            astronomicPhotoOfTheDay.photoHDUrl.toString()
-                        else astronomicPhotoOfTheDay.photoRegularUrl.toString()
+            try{
+                preferencesRepository
+                    .getSettings()
+                    .catch { result = Result.retry() }
+                    .collect{
+                        val taskResult = astronomicPhotoRepository
+                            .getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
 
-                    astronomicPhotoOfTheDay.picture = mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
-                    result = try {
-                        wallpaperHelper.changeWallpaper(applicationContext, astronomicPhotoOfTheDay.picture!!,it.screenOfWallpaper)
-                        Result.success()
-                    } catch (e : Exception){
-                        Result.retry()
+                        result = if(taskResult is TaskResult.Success){
+                            wallpaperHelper.changeWallpaper(
+                                applicationContext,
+                                taskResult.data.picture!!,
+                                it.screenOfWallpaper
+                            )
+                            Result.success()
+                        } else Result.retry()
                     }
-                }
+            } catch (e : Exception){
+                result = Result.retry()
+            }
+
 
             val logData = LogData(
                 id = 0,
