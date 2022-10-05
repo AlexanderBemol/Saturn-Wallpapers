@@ -24,7 +24,7 @@ fun String.getDateFromString() : Date {
 }
 
 fun Date.getReadableString() : String {
-    val formatter = SimpleDateFormat(Constants.READABLE_DATE_FORMAT, Locale.US)
+    val formatter = SimpleDateFormat(Constants.READABLE_DATE_FORMAT, Locale.getDefault())
     return formatter.format(this)
 }
 
