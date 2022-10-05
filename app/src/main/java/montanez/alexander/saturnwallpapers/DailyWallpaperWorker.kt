@@ -14,6 +14,7 @@ import montanez.alexander.saturnwallpapers.repository.IAstronomicPhotoRepository
 import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
 import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
+import montanez.alexander.saturnwallpapers.utils.LogManager
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -25,50 +26,48 @@ class DailyWallpaperWorker(
 ) : CoroutineWorker(context, workerParams), KoinComponent {
     private val preferencesRepository: IPreferencesRepository by inject()
     private val wallpaperHelper: WallpaperHelper by inject()
-    private val logDataRepository: ILogDataRepository by inject()
+    private val logManager: LogManager by inject()
     private val astronomicPhotoRepository: IAstronomicPhotoRepository by inject()
 
-    override suspend fun doWork(): Result {
-        var result = Result.success()
-        withContext(Dispatchers.IO){
-            try{
-                preferencesRepository
-                    .getSettings()
-                    .catch { result = Result.retry() }
-                    .collect{
-                        val taskResult = astronomicPhotoRepository
-                            .getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
+    override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
+        try {
+            preferencesRepository
+                .getSettings()
+                .catch {
+                    logData(false,this.toString())
+                    Result.retry()
+                }
+                .collect {
+                    val taskResult = astronomicPhotoRepository
+                        .getAstronomicPhoto(Date(), QualityOfImages.NORMAL_QUALITY)
 
-                        result = if(taskResult is TaskResult.Success){
-                            wallpaperHelper.changeWallpaper(
-                                applicationContext,
-                                taskResult.data.picture!!,
-                                it.screenOfWallpaper
-                            )
-                            Result.success()
-                        } else Result.retry()
+                    if (taskResult is TaskResult.Success) {
+                        wallpaperHelper.changeWallpaper(
+                            applicationContext,
+                            taskResult.data.picture!!,
+                            it.screenOfWallpaper
+                        )
+                        logData(true)
+                        Result.success()
+                    } else if(taskResult is TaskResult.Error) {
+                        logData(false,taskResult.e.toString())
+                        Result.retry()
                     }
-            } catch (e : Exception){
-                result = Result.retry()
-            }
+                }
+        } catch (e: Exception) {
+            logData(false,e.toString())
+            Result.retry()
+        }
+    } as Result
 
-
-            val logData = LogData(
+    private suspend fun logData(success: Boolean, observations: String = ""){
+        logManager.logData(
+            LogData(
                 id = 0,
                 transaction = Transactions.WORK_MANAGER_WALLPAPER_ATTEMPT,
-                result = when(result){
-                    is Result.Success -> 1
-                    is Result.Failure -> 2
-                    else -> 3
-                },
-                error = result.outputData.toString(),
-                dateTime = Date()
-            )
-            logDataRepository.insertOneLogData(logData)
-
-        }
-
-        return result
+                className = DailyWallpaperWorker::class.simpleName.toString(),
+                success = success,
+                observations = observations
+            ))
     }
-
 }

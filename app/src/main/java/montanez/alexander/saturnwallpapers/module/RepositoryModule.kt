@@ -6,6 +6,7 @@ import montanez.alexander.saturnwallpapers.api.IAstronomicPhotoHelper
 import montanez.alexander.saturnwallpapers.api.LogDataDAO
 import montanez.alexander.saturnwallpapers.api.PictureDownloader
 import montanez.alexander.saturnwallpapers.repository.*
+import montanez.alexander.saturnwallpapers.utils.LogManager
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -31,4 +32,5 @@ val reposModule = module {
     single { provideLogDataRepository(get()) }
     single { provideFilesRepository(androidContext()) }
     single { provideAstronomicRepository(get(),get(),PictureDownloader(),androidContext()) }
+    single { LogManager(get()) }
 }

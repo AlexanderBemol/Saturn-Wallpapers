@@ -34,6 +34,7 @@ class Constants {
         const val KEY_SETTINGS_SERVICE_ENABLED = "SETTINGS_SERVICE_ENABLED"
 
         const val PING_TIME : Int = 3000
+        const val WORKER_PERIOD = 4L
     }
 
 }

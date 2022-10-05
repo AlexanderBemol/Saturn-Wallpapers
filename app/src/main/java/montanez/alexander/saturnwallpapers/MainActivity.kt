@@ -12,21 +12,4 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
-    override fun onStart() {
-        super.onStart()
-
-        val periodicWorkRequest =
-            PeriodicWorkRequestBuilder<DailyWallpaperWorker>(
-                3,TimeUnit.HOURS,
-                1,TimeUnit.HOURS
-            ).addTag(Constants.WORK_MANAGER_DAILY_TAG).build()
-
-        WorkManager.getInstance(applicationContext)
-            .enqueueUniquePeriodicWork(
-                Constants.WORK_MANAGER_DAILY_ID,
-                ExistingPeriodicWorkPolicy.KEEP,
-                periodicWorkRequest)
-
-    }
 }

@@ -6,19 +6,22 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import montanez.alexander.saturnwallpapers.DailyWallpaperWorker
 import montanez.alexander.saturnwallpapers.model.*
 import montanez.alexander.saturnwallpapers.repository.*
 import montanez.alexander.saturnwallpapers.utils.SingleLiveEvent
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
+import montanez.alexander.saturnwallpapers.utils.WorkHelper
 import montanez.alexander.saturnwallpapers.utils.toTimestampFilename
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class HomeViewModel(
     private val wallpaperHelper: WallpaperHelper,
@@ -72,7 +75,6 @@ class HomeViewModel(
     }
 
     fun getAstronomicPhotoOfTheDay(){
-        Log.d(Constants.APP_DEBUG_TAG,"get function")
         CoroutineScope(Dispatchers.IO).launch{
             val astronomicPhotoData =
                 astronomicPhotoRepository.getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
@@ -83,6 +85,21 @@ class HomeViewModel(
             }
 
         }
+    }
+
+    fun starWorker(){
+        CoroutineScope(Dispatchers.IO).launch{
+            preferencesRepository
+                .getSettings()
+                .collect{
+                    if(it.isServiceEnabled){
+                       WorkHelper.setWorker(getApplication<Application>().applicationContext)
+                    } else {
+                       WorkHelper.stopWorker(getApplication<Application>().applicationContext)
+                    }
+                }
+        }
+
     }
 
 }

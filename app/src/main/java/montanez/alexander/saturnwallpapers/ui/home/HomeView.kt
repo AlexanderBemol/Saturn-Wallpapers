@@ -46,6 +46,11 @@ class HomeView : Fragment() {
         observeLiveData()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.starWorker()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAstronomicPhotoOfTheDay()
