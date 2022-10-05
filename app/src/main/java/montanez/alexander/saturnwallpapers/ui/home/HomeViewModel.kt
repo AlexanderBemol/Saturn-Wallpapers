@@ -22,6 +22,7 @@ class HomeViewModel(
 
     val astronomicLiveData = SingleLiveEvent<AstronomicPhoto>()
     val eventStateLiveData = SingleLiveEvent<HomeEventState>()
+    val noInternetConnectionState = SingleLiveEvent<Boolean>()
 
     var bitmapWallpaper: Bitmap? = null
 
@@ -98,8 +99,12 @@ class HomeViewModel(
                 val data = astronomicPhotoData.data
                 bitmapWallpaper = data.picture
                 astronomicLiveData.postValue(data)
+            } else if (astronomicPhotoData is TaskResult.Error){
+                //only error
+                if(astronomicPhotoData.e is PhoneNetworkException){
+                    noInternetConnectionState.postValue(true)
+                }
             }
-
         }
     }
 

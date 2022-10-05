@@ -33,6 +33,7 @@ class HomeView : Fragment() {
     ): View {
         _binding = FragmentHomeViewBinding.inflate(inflater, container, false)
         showViewContent(false)
+        showInternetError(false)
         showLoading(true)
         return binding.root
     }
@@ -74,9 +75,17 @@ class HomeView : Fragment() {
                 binding.backgroundImage.setImageBitmap(it.picture)
                 wallpaperBitmap = it.picture
                 showLoading(false)
+                showInternetError(false)
                 showViewContent(true)
                 binding.homeAuthor.visibility = if(it.author == null || it.author.equals(""))
                     View.INVISIBLE else View.VISIBLE
+            }
+            viewModel.noInternetConnectionState.observe(this.viewLifecycleOwner){
+                if(it){
+                    showLoading(false)
+                    showViewContent(false)
+                    showInternetError(true)
+                }
             }
         }
 
@@ -97,6 +106,12 @@ class HomeView : Fragment() {
         val visibility = if(show) View.VISIBLE else View.INVISIBLE
         binding.loadingAnimation.visibility = visibility
         binding.homeTextLoading.visibility = visibility
+    }
+
+    private fun showInternetError(show: Boolean){
+        val visibility = if(show) View.VISIBLE else View.INVISIBLE
+        binding.noInternetAnimation.visibility = visibility
+        binding.homeTextInternet.visibility = visibility
     }
 
 
