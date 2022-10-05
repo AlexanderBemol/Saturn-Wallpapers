@@ -110,15 +110,17 @@
         android:layout_marginBottom="@dimen/basic_margin"
         />
 
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/loading_circle"
-        android:layout_width="80dp"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_animation"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:lottie_fileName="9965-loading-spinner.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:indeterminate="true"
         />
 
     <com.google.android.material.textview.MaterialTextView
@@ -131,7 +133,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
 
-        app:layout_constraintTop_toBottomOf="@id/loading_circle"
+        app:layout_constraintTop_toBottomOf="@id/loading_animation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/half_margin"

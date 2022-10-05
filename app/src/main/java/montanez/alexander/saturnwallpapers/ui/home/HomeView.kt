@@ -94,7 +94,7 @@ class HomeView : Fragment() {
 
     private fun showLoading(show: Boolean){
         val visibility = if(show) View.VISIBLE else View.INVISIBLE
-        binding.loadingCircle.visibility = visibility
+        binding.loadingAnimation.visibility = visibility
         binding.homeTextLoading.visibility = visibility
     }
 

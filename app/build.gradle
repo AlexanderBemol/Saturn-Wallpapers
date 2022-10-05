@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "montanez.alexander.apodpapers"
+        applicationId "montanez.alexander.saturnwallpapers"
         minSdkVersion 24
         targetSdkVersion 32
         versionCode 1
@@ -74,6 +74,9 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$room_version"
+
+    def lottieVersion = "5.2.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
