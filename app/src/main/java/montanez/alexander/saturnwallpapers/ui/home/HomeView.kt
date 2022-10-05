@@ -18,6 +18,7 @@ import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentHomeViewBinding
 import montanez.alexander.saturnwallpapers.utils.getReadableString
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.*
 
 class HomeView : Fragment() {
     private var _binding: FragmentHomeViewBinding? = null
@@ -69,7 +70,7 @@ class HomeView : Fragment() {
             viewModel.astronomicLiveData.observe(this.viewLifecycleOwner){
                 binding.homeTitle.text = it.title.toString()
                 binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
-                binding.homeDate.text = it.date.getReadableString()
+                binding.homeDate.text = Date().getReadableString()
                 binding.backgroundImage.setImageBitmap(it.picture)
                 wallpaperBitmap = it.picture
                 showLoading(false)
