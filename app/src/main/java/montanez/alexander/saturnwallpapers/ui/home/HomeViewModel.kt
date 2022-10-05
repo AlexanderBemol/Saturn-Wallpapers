@@ -2,31 +2,19 @@ package montanez.alexander.saturnwallpapers.ui.home
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import montanez.alexander.saturnwallpapers.DailyWallpaperWorker
 import montanez.alexander.saturnwallpapers.model.*
 import montanez.alexander.saturnwallpapers.repository.*
-import montanez.alexander.saturnwallpapers.utils.SingleLiveEvent
-import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
-import montanez.alexander.saturnwallpapers.utils.WorkHelper
-import montanez.alexander.saturnwallpapers.utils.toTimestampFilename
+import montanez.alexander.saturnwallpapers.utils.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 class HomeViewModel(
     private val wallpaperHelper: WallpaperHelper,
     private val preferencesRepository: IPreferencesRepository,
-    private val logDataRepository: ILogDataRepository,
+    private val logManager: LogManager,
     private val filesRepository: IFilesRepository,
     private val astronomicPhotoRepository: IAstronomicPhotoRepository,
     application: Application
@@ -39,6 +27,8 @@ class HomeViewModel(
 
     fun updateSpecificWallpaper(screenOfWallpaper: ScreenOfWallpaper){
         CoroutineScope(Dispatchers.IO).launch{
+            var success = false
+            var observation = ""
             try{
                 val bitmap = bitmapWallpaper
                 if (bitmap != null){
@@ -48,29 +38,55 @@ class HomeViewModel(
                         screenOfWallpaper
                     )
                     eventStateLiveData.postValue(HomeEventState.WALLPAPER_SET)
+                    success = true
                 } else {
                     eventStateLiveData.postValue(HomeEventState.ERROR)
                 }
             } catch (e : Exception){
                 eventStateLiveData.postValue(HomeEventState.ERROR)
+                observation = e.toString()
             }
+            logManager.logData(
+                LogData(
+                id = 0,
+                success = success,
+                observations = observation,
+                transaction = when(screenOfWallpaper){
+                    ScreenOfWallpaper.HOME_SCREEN -> Transactions.HOME_WALLPAPER_CHANGED_MANUALLY
+                    ScreenOfWallpaper.LOCK_SCREEN -> Transactions.LOCK_SCREEN_WALLPAPER_CHANGED_MANUALLY
+                    else -> Transactions.SYSTEM_WALLPAPER_CHANGED_MANUALLY
+                },
+                className = HomeViewModel::class.simpleName.toString()
+            ))
         }
 
     }
 
     fun downloadPhoto(){
         CoroutineScope(Dispatchers.IO).launch{
+            var success = false
+            var observation = ""
             try{
                 val bitmap = bitmapWallpaper
                 if (bitmap != null){
                     filesRepository.savePhotoToStorage(bitmap,Date().toTimestampFilename())
                     eventStateLiveData.postValue(HomeEventState.WALLPAPER_SAVED)
+                    success = true
                 } else {
                     eventStateLiveData.postValue(HomeEventState.ERROR)
                 }
             } catch (e : Exception){
                 eventStateLiveData.postValue(HomeEventState.ERROR)
+                observation = e.toString()
             }
+            logManager.logData(
+                LogData(
+                    id = 0,
+                    success = success,
+                    observations = observation,
+                    transaction = Transactions.WALLPAPER_DOWNLOADED,
+                    className = HomeViewModel::class.simpleName.toString()
+                ))
         }
     }
 

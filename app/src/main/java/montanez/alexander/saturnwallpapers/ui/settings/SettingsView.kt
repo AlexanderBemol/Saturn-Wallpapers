@@ -1,8 +1,6 @@
 package montanez.alexander.saturnwallpapers.ui.settings
 
-import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +8,12 @@ import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import montanez.alexander.saturnwallpapers.DailyWallpaperWorker
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentSettingsViewBinding
-import montanez.alexander.saturnwallpapers.model.Constants
 import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.ScreenOfWallpaper
 import montanez.alexander.saturnwallpapers.utils.WorkHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.concurrent.TimeUnit
 
 class SettingsView : Fragment() {
     private var _binding: FragmentSettingsViewBinding? = null
