@@ -8,7 +8,10 @@ import java.util.*
 data class LogData(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val transaction: Transactions,
-    val result: Int,
-    val error: String,
-    val dateTime: Date
+    val dateTime: Date = Date(),
+    val success: Boolean,
+    val observations: String = "",
+    val className: String,
+    val oldValue: String = "",
+    val newValue: String = ""
 )

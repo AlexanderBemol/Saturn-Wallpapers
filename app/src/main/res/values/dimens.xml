@@ -5,9 +5,9 @@
     <dimen name="triple_margin">48dp</dimen>
     <dimen name="half_margin">8dp</dimen>
 
-    <dimen name="home_title">32sp</dimen>
+    <dimen name="home_title">30sp</dimen>
     <dimen name="home_author">18sp</dimen>
-    <dimen name="home_date">26sp</dimen>
+    <dimen name="home_date">24sp</dimen>
     <dimen name="settings_text_size">22sp</dimen>
 
     <dimen name="description_title">24sp</dimen>

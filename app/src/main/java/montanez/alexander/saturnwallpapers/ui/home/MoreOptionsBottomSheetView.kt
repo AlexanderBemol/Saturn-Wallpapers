@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -74,7 +75,7 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
 
     }
 
-    private fun onEventCompleted(){
+    private fun onEventCompleted(event: HomeEventState){
         val myContext = context
         if(myContext != null){
             val downloadDrawable = AppCompatResources.getDrawable(myContext,R.drawable.ic_save)
@@ -95,17 +96,16 @@ class MoreOptionsBottomSheetView : BottomSheetDialogFragment() {
                 lockDrawable,null,null,null
             )
         }
+        if(event != HomeEventState.IDLE)
+            Toast.makeText(context,event.getStringResource(), Toast.LENGTH_SHORT).show()
         this.dismiss()
     }
 
     private fun observeLiveData(){
         val context = this.context
         if (context != null){
-            lifecycleScope.launch {
-                viewModel.eventState.flowWithLifecycle(
-                    this@MoreOptionsBottomSheetView.lifecycle, Lifecycle.State.STARTED
-                )
-                    .collect {onEventCompleted()}
+            viewModel.eventStateLiveData.observe(this@MoreOptionsBottomSheetView){
+                if(it != HomeEventState.IDLE) onEventCompleted(it)
             }
         }
     }

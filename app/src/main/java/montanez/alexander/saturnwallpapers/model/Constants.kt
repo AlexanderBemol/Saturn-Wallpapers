@@ -8,8 +8,9 @@ class Constants {
         val APOD_KEY = "GVWuXLsKY0JFFo1kvZ1YgeHyD9AONA1S2wcrwaSq"
 
         const val WORK_MANAGER_DAILY_ID = "SATURN_WALLPAPERS_DAILY_WORKER"
+        const val WORK_MANAGER_DAILY_TAG = "SATURN_WALLPAPERS_DAILY_WORKER_TAG"
 
-        //const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
+        const val APP_DEBUG_TAG = "SATURN_PAPERS_DEBUG"
 
         const val MEDIA_TYPE_IMAGE = "image"
         const val MEDIA_TYPE_VIDEO = "video"
@@ -32,6 +33,8 @@ class Constants {
         const val KEY_SETTINGS_SCREEN = "SETTINGS_SCREEN"
         const val KEY_SETTINGS_SERVICE_ENABLED = "SETTINGS_SERVICE_ENABLED"
 
+        const val PING_TIME : Int = 3000
+        const val WORKER_PERIOD = 4L
     }
 
 }

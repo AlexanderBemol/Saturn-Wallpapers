@@ -54,6 +54,7 @@ class MainRepository(
 
     private fun getDefaultPhoto() : AstronomicPhoto{
         return AstronomicPhoto(
+            id = 0,
             date = Constants.DEFAULT_APOD_DATE.getDateFromString(),
             explanation = Constants.DEFAULT_APOD_EXPLANATION,
             author = Constants.DEFAULT_APOD_COPYRIGHT,

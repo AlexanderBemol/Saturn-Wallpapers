@@ -33,6 +33,8 @@ class FilesRepository(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
             val image = File(imagesDir, filename)
             fos = FileOutputStream(image)
+
+            context.cacheDir
         }
 
         fos?.use {

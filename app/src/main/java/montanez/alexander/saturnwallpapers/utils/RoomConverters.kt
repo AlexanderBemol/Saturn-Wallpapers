@@ -1,6 +1,7 @@
 package montanez.alexander.saturnwallpapers.utils
 
 import androidx.room.TypeConverter
+import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.Transactions
 import java.util.*
 
@@ -21,9 +22,15 @@ class RoomConverters {
     }
 
     @TypeConverter
-    fun transactonToInt(transaction: Transactions): Int{
+    fun transactionToInt(transaction: Transactions): Int{
         return transaction.getCode()
     }
+
+    @TypeConverter
+    fun intToQualityOfImage(code: Int) = QualityOfImages.fromInt(code)
+
+    @TypeConverter
+    fun qualityOfImageToInt(qualityOfImages: QualityOfImages) = qualityOfImages.getCode()
 
 
 }

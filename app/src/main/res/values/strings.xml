@@ -7,12 +7,12 @@
         app.</string>
     <string name="on_boarding_title_2">Discover</string>
     <string name="on_boarding_description_2">Every day you will see a new and cool astronomic photo
-        as your new wallpaper. \n You can turn off this feature in the app settings.</string>
+        as your new wallpaper.</string>
     <string name="on_boarding_title_3">Download</string>
     <string name="on_boarding_description_3">Did you fall in love with a photo? you can download
         it with a click.</string>
     <string name="on_boarding_next">Next</string>
-    <string name="on_boarding_get_started">Get Started!"</string>
+    <string name="on_boarding_get_started">Get Started!</string>
 
     <string name="home_wallpaper_description">Cool Wallpaper</string>
     <string name="home_title">The Astronomic Picture Of the Day</string>

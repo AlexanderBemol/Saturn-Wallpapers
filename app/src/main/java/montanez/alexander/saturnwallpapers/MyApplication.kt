@@ -1,7 +1,7 @@
 package montanez.alexander.saturnwallpapers
 
 import android.app.Application
-import montanez.alexander.saturnwallpapers.module.appModule
+import montanez.alexander.saturnwallpapers.module.sourceModule
 import montanez.alexander.saturnwallpapers.module.daoModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -16,7 +16,7 @@ class MyApplication : Application() {
             androidLogger()
             androidContext(this@MyApplication)
             modules(
-                appModule,
+                sourceModule,
                 daoModule,
                 reposModule,
                 viewModelsModule

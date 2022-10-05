@@ -3,124 +3,119 @@ package montanez.alexander.saturnwallpapers.ui.home
 import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.model.*
-import montanez.alexander.saturnwallpapers.repository.IFilesRepository
-import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
-import montanez.alexander.saturnwallpapers.repository.IMainRepository
-import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
-import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
+import montanez.alexander.saturnwallpapers.repository.*
+import montanez.alexander.saturnwallpapers.utils.*
 import java.util.*
 
 class HomeViewModel(
-    private val mainRepository: IMainRepository,
     private val wallpaperHelper: WallpaperHelper,
     private val preferencesRepository: IPreferencesRepository,
-    private val logDataRepository: ILogDataRepository,
+    private val logManager: LogManager,
     private val filesRepository: IFilesRepository,
+    private val astronomicPhotoRepository: IAstronomicPhotoRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
-    private val _eventState = MutableSharedFlow<HomeEventState>(0)
-    val eventState: SharedFlow<HomeEventState> get() = _eventState
+    val astronomicLiveData = SingleLiveEvent<AstronomicPhoto>()
+    val eventStateLiveData = SingleLiveEvent<HomeEventState>()
 
-    private val _astronomicData = MutableSharedFlow<AstronomicPhoto>(0)
-    val astronomicData: SharedFlow<AstronomicPhoto> get() = _astronomicData
-
-    fun getCurrentAstronomicPhotoOfTheDay(){
-        viewModelScope.launch {
-            val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
-            preferencesRepository.getSettings().collect{
-                val pictureURL : String =
-                    if(it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
-                        astronomicPhotoOfTheDay.photoHDUrl.toString()
-                    else astronomicPhotoOfTheDay.photoRegularUrl.toString()
-
-                astronomicPhotoOfTheDay.picture =
-                    mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
-
-                _astronomicData.emit(astronomicPhotoOfTheDay)
-            }
-        }
-    }
-
-    fun updateWallpaper(newWallpaper: Bitmap){
-        CoroutineScope(Dispatchers.IO).launch{
-            preferencesRepository.getSettings().collect{
-                wallpaperHelper.changeWallpaper(
-                    getApplication<Application>().applicationContext,
-                    newWallpaper,
-                    it.screenOfWallpaper
-                )
-                val logData = LogData(
-                    id = 0,
-                    transaction = Transactions.WALLPAPER_CHANGED_MANUALLY,
-                    result = 1,
-                    error = "",
-                    dateTime = Date()
-                )
-                logDataRepository.insertOneLogData(logData)
-            }
-        }
-    }
+    var bitmapWallpaper: Bitmap? = null
 
     fun updateSpecificWallpaper(screenOfWallpaper: ScreenOfWallpaper){
-        viewModelScope.launch {
-            val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
-            preferencesRepository.getSettings().collect {
-                val pictureURL: String =
-                    if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
-                        astronomicPhotoOfTheDay.photoHDUrl.toString()
-                    else astronomicPhotoOfTheDay.photoRegularUrl.toString()
-
-                astronomicPhotoOfTheDay.picture =
-                    mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
-
-                wallpaperHelper.changeWallpaper(
-                    getApplication<Application>().applicationContext,
-                    astronomicPhotoOfTheDay.picture!!,
-                    screenOfWallpaper
-                )
-
-                _eventState.emit(HomeEventState.WALLPAPER_SET)
+        CoroutineScope(Dispatchers.IO).launch{
+            var success = false
+            var observation = ""
+            try{
+                val bitmap = bitmapWallpaper
+                if (bitmap != null){
+                    wallpaperHelper.changeWallpaper(
+                        getApplication<Application>().applicationContext,
+                        bitmap,
+                        screenOfWallpaper
+                    )
+                    eventStateLiveData.postValue(HomeEventState.WALLPAPER_SET)
+                    success = true
+                } else {
+                    eventStateLiveData.postValue(HomeEventState.ERROR)
+                }
+            } catch (e : Exception){
+                eventStateLiveData.postValue(HomeEventState.ERROR)
+                observation = e.toString()
             }
+            logManager.logData(
+                LogData(
+                id = 0,
+                success = success,
+                observations = observation,
+                transaction = when(screenOfWallpaper){
+                    ScreenOfWallpaper.HOME_SCREEN -> Transactions.HOME_WALLPAPER_CHANGED_MANUALLY
+                    ScreenOfWallpaper.LOCK_SCREEN -> Transactions.LOCK_SCREEN_WALLPAPER_CHANGED_MANUALLY
+                    else -> Transactions.SYSTEM_WALLPAPER_CHANGED_MANUALLY
+                },
+                className = HomeViewModel::class.simpleName.toString()
+            ))
         }
 
     }
 
     fun downloadPhoto(){
-        viewModelScope.launch {
+        CoroutineScope(Dispatchers.IO).launch{
+            var success = false
+            var observation = ""
             try{
-                val astronomicPhotoOfTheDay = mainRepository.getBitmapOfPhotoOfTheDay()
-                preferencesRepository.getSettings().collect {
-                    val pictureURL: String =
-                        if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY)
-                            astronomicPhotoOfTheDay.photoHDUrl.toString()
-                        else astronomicPhotoOfTheDay.photoRegularUrl.toString()
-
-                    astronomicPhotoOfTheDay.picture =
-                        mainRepository.getBitmapOfPhotoOfTheDay(pictureURL)
-
-                    val filename = astronomicPhotoOfTheDay.date.time.toString() + ".jpg"
-
-                    filesRepository.savePhotoToStorage(astronomicPhotoOfTheDay.picture!!,filename)
-
-                    _eventState.emit(HomeEventState.WALLPAPER_SAVED)
-
+                val bitmap = bitmapWallpaper
+                if (bitmap != null){
+                    filesRepository.savePhotoToStorage(bitmap,Date().toTimestampFilename())
+                    eventStateLiveData.postValue(HomeEventState.WALLPAPER_SAVED)
+                    success = true
+                } else {
+                    eventStateLiveData.postValue(HomeEventState.ERROR)
                 }
             } catch (e : Exception){
-                _eventState.emit(HomeEventState.ERROR)
+                eventStateLiveData.postValue(HomeEventState.ERROR)
+                observation = e.toString()
+            }
+            logManager.logData(
+                LogData(
+                    id = 0,
+                    success = success,
+                    observations = observation,
+                    transaction = Transactions.WALLPAPER_DOWNLOADED,
+                    className = HomeViewModel::class.simpleName.toString()
+                ))
+        }
+    }
+
+    fun getAstronomicPhotoOfTheDay(){
+        CoroutineScope(Dispatchers.IO).launch{
+            val astronomicPhotoData =
+                astronomicPhotoRepository.getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
+            if(astronomicPhotoData is TaskResult.Success){
+                val data = astronomicPhotoData.data
+                bitmapWallpaper = data.picture
+                astronomicLiveData.postValue(data)
             }
 
         }
+    }
+
+    fun starWorker(){
+        CoroutineScope(Dispatchers.IO).launch{
+            preferencesRepository
+                .getSettings()
+                .collect{
+                    if(it.isServiceEnabled){
+                       WorkHelper.setWorker(getApplication<Application>().applicationContext)
+                    } else {
+                       WorkHelper.stopWorker(getApplication<Application>().applicationContext)
+                    }
+                }
+        }
+
     }
 
 }

@@ -1,7 +1,6 @@
 package montanez.alexander.saturnwallpapers.ui.settings
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentSettingsViewBinding
 import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.ScreenOfWallpaper
+import montanez.alexander.saturnwallpapers.utils.WorkHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsView : Fragment() {
@@ -49,6 +49,8 @@ class SettingsView : Fragment() {
         }
         binding.switchServiceEnabled.setOnCheckedChangeListener { _, b ->
             viewModel.setIsServiceEnabled(b)
+            if (!b) context?.let { WorkHelper.stopWorker(it) }
+            else context?.let { WorkHelper.setWorker(it) }
         }
 
     }
@@ -58,25 +60,25 @@ class SettingsView : Fragment() {
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         popup.setOnMenuItemClickListener {
-             when (menuRes){
-                 R.menu.quality_menu -> {
+            when (menuRes) {
+                R.menu.quality_menu -> {
                     binding.spinnerQuality.text = it.title
-                     viewModel.setQualityOfImages(
-                         if(it.title  == getString(R.string.quality_high)) QualityOfImages.HIGH_QUALITY
-                         else QualityOfImages.NORMAL_QUALITY
-                     )
-                 }
-                 else -> {
-                     binding.spinnerScreen.text = it.title
-                     viewModel.setScreenOfWallpaper(
-                         when(it.title){
-                             getString(R.string.screens_home) -> ScreenOfWallpaper.HOME_SCREEN
-                             getString(R.string.screens_lock) -> ScreenOfWallpaper.LOCK_SCREEN
-                             else -> ScreenOfWallpaper.BOTH_SCREENS
-                         }
-                     )
-                 }
-             }
+                    viewModel.setQualityOfImages(
+                        if (it.title == getString(R.string.quality_high)) QualityOfImages.HIGH_QUALITY
+                        else QualityOfImages.NORMAL_QUALITY
+                    )
+                }
+                else -> {
+                    binding.spinnerScreen.text = it.title
+                    viewModel.setScreenOfWallpaper(
+                        when (it.title) {
+                            getString(R.string.screens_home) -> ScreenOfWallpaper.HOME_SCREEN
+                            getString(R.string.screens_lock) -> ScreenOfWallpaper.LOCK_SCREEN
+                            else -> ScreenOfWallpaper.BOTH_SCREENS
+                        }
+                    )
+                }
+            }
             true
         }
         popup.setOnDismissListener {
@@ -86,22 +88,24 @@ class SettingsView : Fragment() {
         popup.show()
     }
 
-    private fun observeLiveData(){
+    private fun observeLiveData() {
         val context = context
-        if(context != null){
-            viewModel.settingsServiceValues.observe(viewLifecycleOwner){
+        if (context != null) {
+            viewModel.settingsServiceValues.observe(viewLifecycleOwner) {
                 binding.switchServiceEnabled.isChecked = it.isServiceEnabled
 
-                if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY) binding.spinnerQuality.text = getString(R.string.quality_high)
+                if (it.qualityOfImages == QualityOfImages.HIGH_QUALITY) binding.spinnerQuality.text =
+                    getString(R.string.quality_high)
                 else binding.spinnerQuality.text = getString(R.string.quality_normal)
 
                 when (it.screenOfWallpaper) {
-                    ScreenOfWallpaper.HOME_SCREEN -> binding.spinnerScreen.text = getString(R.string.screens_home)
-                    ScreenOfWallpaper.LOCK_SCREEN -> binding.spinnerScreen.text = getString(R.string.screens_lock)
+                    ScreenOfWallpaper.HOME_SCREEN -> binding.spinnerScreen.text =
+                        getString(R.string.screens_home)
+                    ScreenOfWallpaper.LOCK_SCREEN -> binding.spinnerScreen.text =
+                        getString(R.string.screens_lock)
                     else -> binding.spinnerScreen.text = getString(R.string.screens_both)
                 }
             }
         }
     }
-
 }
