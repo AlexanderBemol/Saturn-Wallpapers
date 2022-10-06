@@ -11,4 +11,6 @@ class LogDataRepository(
        logDataDAO.insertOne(logData)
     }
 
+    override suspend fun getData() = logDataDAO.getAll()
+
 }

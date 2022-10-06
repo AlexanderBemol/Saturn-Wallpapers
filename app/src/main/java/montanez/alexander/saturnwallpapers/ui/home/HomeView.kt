@@ -100,6 +100,7 @@ class HomeView : Fragment() {
         binding.homeButtonSettings.visibility = visibility
         binding.homeMoreButton.visibility = visibility
         binding.backgroundImage.visibility = visibility
+        binding.homeGradient.visibility = visibility
     }
 
     private fun showLoading(show: Boolean){
