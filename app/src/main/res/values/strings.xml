@@ -37,7 +37,7 @@
     <string name="save_description">Save</string>
 
     <string name="settings">Settings</string>
-    <string name="settings_service_enabled">Service Enabled</string>
+    <string name="settings_service_enabled">Automatic Service</string>
     <string name="settings_quality">Photos Quality</string>
     <string name="settings_wallpaper_screen">Wallpaper Screen</string>
 

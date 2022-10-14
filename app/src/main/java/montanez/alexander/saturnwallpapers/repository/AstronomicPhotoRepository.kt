@@ -33,7 +33,7 @@ class AstronomicPhotoRepository(
                 TaskResult.Success(dataForTheDay)
             } else { //if there´s none
                 return if(NetworkConnection.isOnline()){ //if there´s internet available
-                    val response = apiHelper.getPhotoOfTheDay()
+                    val response = apiHelper.getPhotoOfADay(deviceDate.getParsedDate())
                     if (isAValidResponse(response)) { //if the response is valid
                         val responseBody = response.body()!!
                         responseBody.deviceDate = deviceDate
@@ -47,6 +47,7 @@ class AstronomicPhotoRepository(
                                 responseBody.picture = photoResponse.data
                                 savePhotoToInternal(responseBody)
                                 responseBody.localFilename = responseBody.date.toTimestampFilename()
+                                responseBody.mediaQuality = qualityOfImages
                                 astronomicPhotoDAO.insertOne(responseBody)
                                 TaskResult.Success(responseBody)
                             }
@@ -58,6 +59,7 @@ class AstronomicPhotoRepository(
                     else { //get default data, insert data for today with default data
                         val defaultData = dataList.firstOrNull{
                                 x->x.date.isTheSameDayAs(Constants.DEFAULT_APOD_DATE.getDateFromString())
+                                    && x.mediaQuality == qualityOfImages
                         }
                         if(defaultData != null){
                             astronomicPhotoDAO.insertOne(defaultData)
@@ -78,6 +80,7 @@ class AstronomicPhotoRepository(
                                     responseBody.picture = photoResponse.data
                                     savePhotoToInternal(responseBody)
                                     responseBody.localFilename = responseBody.date.toTimestampFilename()
+                                    responseBody.mediaQuality = qualityOfImages
                                     astronomicPhotoDAO.insertOne(responseBody)
                                     TaskResult.Success(responseBody)
                                 }
@@ -93,7 +96,7 @@ class AstronomicPhotoRepository(
             TaskResult.Error(NotDataForDayFoundException())
         } catch (e : MissingPhotoException){ //Corrupted Data, will delete record and try again
             astronomicPhotoDAO.delete(e.astronomicPhoto)
-            getAstronomicPhoto(e.astronomicPhoto.deviceDate, QualityOfImages.NORMAL_QUALITY)
+            getAstronomicPhoto(e.astronomicPhoto.deviceDate, e.astronomicPhoto.mediaQuality)
         } catch (e : Exception){
             TaskResult.Error(e)
         }

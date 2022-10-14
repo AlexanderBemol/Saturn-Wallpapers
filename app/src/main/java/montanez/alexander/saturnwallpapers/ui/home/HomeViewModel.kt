@@ -93,18 +93,22 @@ class HomeViewModel(
 
     fun getAstronomicPhotoOfTheDay(){
         CoroutineScope(Dispatchers.IO).launch{
-            val astronomicPhotoData =
-                astronomicPhotoRepository.getAstronomicPhoto(Date(),QualityOfImages.NORMAL_QUALITY)
-            if(astronomicPhotoData is TaskResult.Success){
-                val data = astronomicPhotoData.data
-                bitmapWallpaper = data.picture
-                astronomicLiveData.postValue(data)
-            } else if (astronomicPhotoData is TaskResult.Error){
-                //only error
-                if(astronomicPhotoData.e is PhoneNetworkException){
-                    noInternetConnectionState.postValue(true)
+            preferencesRepository
+                .getSettings()
+                .collect{
+                    val astronomicPhotoData =
+                        astronomicPhotoRepository.getAstronomicPhoto(Date(),it.qualityOfImages)
+                    if(astronomicPhotoData is TaskResult.Success){
+                        val data = astronomicPhotoData.data
+                        bitmapWallpaper = data.picture
+                        astronomicLiveData.postValue(data)
+                    } else if (astronomicPhotoData is TaskResult.Error){
+                        //only error
+                        if(astronomicPhotoData.e is PhoneNetworkException){
+                            noInternetConnectionState.postValue(true)
+                        }
+                    }
                 }
-            }
         }
     }
 

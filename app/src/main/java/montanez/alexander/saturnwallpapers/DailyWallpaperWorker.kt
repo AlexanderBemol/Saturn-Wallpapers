@@ -16,6 +16,7 @@ import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
 import montanez.alexander.saturnwallpapers.utils.LogManager
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
+import montanez.alexander.saturnwallpapers.utils.getWithFixedSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
@@ -39,12 +40,12 @@ class DailyWallpaperWorker(
                 }
                 .collect {
                     val taskResult = astronomicPhotoRepository
-                        .getAstronomicPhoto(Date(), QualityOfImages.NORMAL_QUALITY)
+                        .getAstronomicPhoto(Date(), it.qualityOfImages)
 
                     if (taskResult is TaskResult.Success) {
                         wallpaperHelper.changeWallpaper(
                             applicationContext,
-                            taskResult.data.picture!!,
+                            taskResult.data.picture!!.getWithFixedSize(),
                             it.screenOfWallpaper
                         )
                         logData(true)

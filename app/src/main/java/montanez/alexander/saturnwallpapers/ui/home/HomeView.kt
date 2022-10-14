@@ -5,18 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentHomeViewBinding
 import montanez.alexander.saturnwallpapers.utils.getReadableString
+import montanez.alexander.saturnwallpapers.utils.getWithFixedSize
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -69,11 +63,12 @@ class HomeView : Fragment() {
         val context = this.context
         if (context != null){
             viewModel.astronomicLiveData.observe(this.viewLifecycleOwner){
+                val fixedBitmap = it.picture?.getWithFixedSize()
                 binding.homeTitle.text = it.title.toString()
                 binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
                 binding.homeDate.text = Date().getReadableString()
-                binding.backgroundImage.setImageBitmap(it.picture)
-                wallpaperBitmap = it.picture
+                binding.backgroundImage.setImageBitmap(fixedBitmap)
+                wallpaperBitmap = fixedBitmap
                 showLoading(false)
                 showInternetError(false)
                 showViewContent(true)

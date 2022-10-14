@@ -35,7 +35,7 @@ class SplashView : Fragment() {
     override fun onStart() {
         super.onStart()
         MainScope().launch {
-            delay(3000L)
+            delay(1500L)
             viewModel.checkOnBoardingStatus()
         }
     }

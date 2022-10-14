@@ -37,7 +37,7 @@
     <string name="save_description">Guardar</string>
 
     <string name="settings">Ajustes</string>
-    <string name="settings_service_enabled">Servicio Habilitado</string>
+    <string name="settings_service_enabled">Servicio Automático</string>
     <string name="settings_quality">Calidad de Fotos</string>
     <string name="settings_wallpaper_screen">Pantalla de Wallpaper</string>
 
