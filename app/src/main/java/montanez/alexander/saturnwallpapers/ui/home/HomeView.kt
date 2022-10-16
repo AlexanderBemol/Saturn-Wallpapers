@@ -1,6 +1,5 @@
 package montanez.alexander.saturnwallpapers.ui.home
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentHomeViewBinding
 import montanez.alexander.saturnwallpapers.utils.getReadableString
-import montanez.alexander.saturnwallpapers.utils.getWithFixedSize
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
@@ -18,7 +16,6 @@ class HomeView : Fragment() {
     private var _binding: FragmentHomeViewBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by sharedViewModel()
-    private var wallpaperBitmap : Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,12 +60,10 @@ class HomeView : Fragment() {
         val context = this.context
         if (context != null){
             viewModel.astronomicLiveData.observe(this.viewLifecycleOwner){
-                val fixedBitmap = it.picture?.getWithFixedSize()
                 binding.homeTitle.text = it.title.toString()
                 binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
                 binding.homeDate.text = Date().getReadableString()
-                binding.backgroundImage.setImageBitmap(fixedBitmap)
-                wallpaperBitmap = fixedBitmap
+                binding.backgroundImage.setImageBitmap(it.picture)
                 showLoading(false)
                 showInternetError(false)
                 showViewContent(true)

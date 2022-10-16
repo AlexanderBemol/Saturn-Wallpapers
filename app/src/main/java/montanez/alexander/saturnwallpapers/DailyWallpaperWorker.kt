@@ -7,16 +7,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.withContext
 import montanez.alexander.saturnwallpapers.model.LogData
-import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.TaskResult
 import montanez.alexander.saturnwallpapers.model.Transactions
 import montanez.alexander.saturnwallpapers.repository.IAstronomicPhotoRepository
-import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
-import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
 import montanez.alexander.saturnwallpapers.utils.LogManager
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
-import montanez.alexander.saturnwallpapers.utils.getWithFixedSize
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
@@ -45,7 +41,7 @@ class DailyWallpaperWorker(
                     if (taskResult is TaskResult.Success) {
                         wallpaperHelper.changeWallpaper(
                             applicationContext,
-                            taskResult.data.picture!!.getWithFixedSize(),
+                            taskResult.data.picture!!,
                             it.screenOfWallpaper
                         )
                         logData(true)
