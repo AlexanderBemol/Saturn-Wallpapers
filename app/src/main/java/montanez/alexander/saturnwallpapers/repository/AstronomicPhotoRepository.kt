@@ -44,7 +44,7 @@ class AstronomicPhotoRepository(
                         )
                         when(photoResponse){
                             is TaskResult.Success -> {
-                                responseBody.picture = photoResponse.data
+                                responseBody.picture = photoResponse.data.getWithFixedSize()
                                 savePhotoToInternal(responseBody)
                                 responseBody.localFilename = responseBody.date.toTimestampFilename()
                                 responseBody.mediaQuality = qualityOfImages
@@ -77,7 +77,7 @@ class AstronomicPhotoRepository(
                             )
                             when(photoResponse){
                                 is TaskResult.Success -> {
-                                    responseBody.picture = photoResponse.data
+                                    responseBody.picture = photoResponse.data.getWithFixedSize()
                                     savePhotoToInternal(responseBody)
                                     responseBody.localFilename = responseBody.date.toTimestampFilename()
                                     responseBody.mediaQuality = qualityOfImages

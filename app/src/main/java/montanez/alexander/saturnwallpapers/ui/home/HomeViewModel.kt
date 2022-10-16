@@ -101,7 +101,7 @@ class HomeViewModel(
                     if(astronomicPhotoData is TaskResult.Success){
                         val data = astronomicPhotoData.data
                         bitmapWallpaper = data.picture
-                        data.picture = data.picture?.getWithFixedSize()
+                        data.picture = data.picture
                         astronomicLiveData.postValue(data)
                     } else if (astronomicPhotoData is TaskResult.Error){
                         //only error
