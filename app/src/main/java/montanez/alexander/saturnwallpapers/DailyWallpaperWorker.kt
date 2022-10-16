@@ -7,12 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.withContext
 import montanez.alexander.saturnwallpapers.model.LogData
-import montanez.alexander.saturnwallpapers.model.QualityOfImages
 import montanez.alexander.saturnwallpapers.model.TaskResult
 import montanez.alexander.saturnwallpapers.model.Transactions
 import montanez.alexander.saturnwallpapers.repository.IAstronomicPhotoRepository
-import montanez.alexander.saturnwallpapers.repository.ILogDataRepository
-import montanez.alexander.saturnwallpapers.repository.IMainRepository
 import montanez.alexander.saturnwallpapers.repository.IPreferencesRepository
 import montanez.alexander.saturnwallpapers.utils.LogManager
 import montanez.alexander.saturnwallpapers.utils.WallpaperHelper
@@ -39,7 +36,7 @@ class DailyWallpaperWorker(
                 }
                 .collect {
                     val taskResult = astronomicPhotoRepository
-                        .getAstronomicPhoto(Date(), QualityOfImages.NORMAL_QUALITY)
+                        .getAstronomicPhoto(Date(), it.qualityOfImages)
 
                     if (taskResult is TaskResult.Success) {
                         wallpaperHelper.changeWallpaper(

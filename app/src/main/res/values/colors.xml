@@ -69,5 +69,5 @@
 
     <color name="blue_background_transparent">#B21C1B27</color>
     <color name="blue_background_transparent_pressed">#A465628F</color>
-
+    <color name="ic_launcher_background">#7A3AC2</color>
 </resources>

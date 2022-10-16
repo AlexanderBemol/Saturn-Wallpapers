@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:104822459774:android:2e22ab48a1d48846eb372f",
+        "mobilesdk_app_id": "1:104822459774:android:70518ec0583bc457eb372f",
         "android_client_info": {
-          "package_name": "montanez.alexander.apodpapers"
+          "package_name": "montanez.alexander.saturnwallpapers"
         }
       },
       "oauth_client": [
         {
-          "client_id": "104822459774-lrud473n4c2pe45u9k2e6g0qi8d0lubh.apps.googleusercontent.com",
+          "client_id": "104822459774-frg8s97d4s43r4k0dp142m386uj8r9el.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "montanez.alexander.apodpapers",
+            "package_name": "montanez.alexander.saturnwallpapers",
             "certificate_hash": "c17c2fe2e234cb76cf716facc1a980be01a34e71"
           }
         },

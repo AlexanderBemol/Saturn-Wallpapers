@@ -1,29 +1,21 @@
 package montanez.alexander.saturnwallpapers.ui.home
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import montanez.alexander.saturnwallpapers.R
 import montanez.alexander.saturnwallpapers.databinding.FragmentHomeViewBinding
 import montanez.alexander.saturnwallpapers.utils.getReadableString
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import java.util.*
 
 class HomeView : Fragment() {
     private var _binding: FragmentHomeViewBinding? = null
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by sharedViewModel()
-    private var wallpaperBitmap : Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +24,7 @@ class HomeView : Fragment() {
     ): View {
         _binding = FragmentHomeViewBinding.inflate(inflater, container, false)
         showViewContent(false)
+        showInternetError(false)
         showLoading(true)
         return binding.root
     }
@@ -69,13 +62,20 @@ class HomeView : Fragment() {
             viewModel.astronomicLiveData.observe(this.viewLifecycleOwner){
                 binding.homeTitle.text = it.title.toString()
                 binding.homeAuthor.text = context.getText(R.string.home_author_prefix).toString().plus(" "+it.author)
-                binding.homeDate.text = it.date.getReadableString()
+                binding.homeDate.text = Date().getReadableString()
                 binding.backgroundImage.setImageBitmap(it.picture)
-                wallpaperBitmap = it.picture
                 showLoading(false)
+                showInternetError(false)
                 showViewContent(true)
                 binding.homeAuthor.visibility = if(it.author == null || it.author.equals(""))
                     View.INVISIBLE else View.VISIBLE
+            }
+            viewModel.noInternetConnectionState.observe(this.viewLifecycleOwner){
+                if(it){
+                    showLoading(false)
+                    showViewContent(false)
+                    showInternetError(true)
+                }
             }
         }
 
@@ -90,12 +90,19 @@ class HomeView : Fragment() {
         binding.homeButtonSettings.visibility = visibility
         binding.homeMoreButton.visibility = visibility
         binding.backgroundImage.visibility = visibility
+        binding.homeGradient.visibility = visibility
     }
 
     private fun showLoading(show: Boolean){
         val visibility = if(show) View.VISIBLE else View.INVISIBLE
-        binding.loadingCircle.visibility = visibility
+        binding.loadingAnimation.visibility = visibility
         binding.homeTextLoading.visibility = visibility
+    }
+
+    private fun showInternetError(show: Boolean){
+        val visibility = if(show) View.VISIBLE else View.INVISIBLE
+        binding.noInternetAnimation.visibility = visibility
+        binding.homeTextInternet.visibility = visibility
     }
 
 

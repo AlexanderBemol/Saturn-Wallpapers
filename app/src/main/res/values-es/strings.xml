@@ -37,7 +37,7 @@
     <string name="save_description">Guardar</string>
 
     <string name="settings">Ajustes</string>
-    <string name="settings_service_enabled">Servicio Habilitado</string>
+    <string name="settings_service_enabled">Servicio Automático</string>
     <string name="settings_quality">Calidad de Fotos</string>
     <string name="settings_wallpaper_screen">Pantalla de Wallpaper</string>
 
@@ -57,4 +57,5 @@
     <string name="message_set_wallpaper_success">¡Fondo establecido con éxito!</string>
     <string name="message_save_wallpaper_success">¡Foto guardada con éxito!</string>
     <string name="message_error">Algo salió mal</string>
+    <string name="message_error_internet">Revisa tu conexión a internet e intenta de nuevo</string>
 </resources>

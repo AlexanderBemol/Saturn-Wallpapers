@@ -1,8 +1,13 @@
 package montanez.alexander.saturnwallpapers.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.text.format.DateUtils
+import android.widget.ImageView
 import montanez.alexander.saturnwallpapers.model.Constants
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,4 +43,33 @@ fun Date.isTheSameDayAs(date: Date) : Boolean{
     return thisCalendar.get(Calendar.YEAR) == objectiveCalendar.get(Calendar.YEAR) &&
             thisCalendar.get(Calendar.MONTH) == objectiveCalendar.get(Calendar.MONTH) &&
             thisCalendar.get(Calendar.DAY_OF_MONTH) == objectiveCalendar.get(Calendar.DAY_OF_MONTH)
+}
+
+fun Bitmap.getWithFixedSize() : Bitmap{
+    val maxSize = 8000000 //10MB
+    val actualSize = this.allocationByteCount
+    val bitmap = if(actualSize <= maxSize) this
+    else{
+        val quality = ((maxSize.toFloat()/actualSize.toFloat()) * 100).toInt()
+        val output = ByteArrayOutputStream()
+        this.compress(Bitmap.CompressFormat.JPEG,quality,output)
+        BitmapFactory.decodeStream(ByteArrayInputStream(output.toByteArray()))
+    }
+
+    val maxW = 1080
+    val maxH = 2280
+    var w = bitmap.width
+    var h = bitmap.height
+    if(w == h && w >= maxW && h >= maxH) {
+        w = maxH
+        h = maxH
+    } else if (w > h && w > maxW){
+        w = maxW
+        h = (h*maxW)/w
+    } else if (h > w && h > maxW){
+        w = (w*maxH)/h
+        h = maxH
+    }
+
+    return Bitmap.createScaledBitmap(bitmap,w,h,true)
 }
